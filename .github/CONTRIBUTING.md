@@ -6,6 +6,7 @@ The following folders are **private** and should **never** be committed or pushe
 
 - `developer-folder/` - Contains private development materials
 - `documentation/` - Contains private documentation
+- `internal-modules/tools-packages/proposed-untested/` - Contains untested or sensitive internal tools/packages
 
 These folders are already added to the `.gitignore` file. Please do not modify this configuration or attempt to commit any content from these directories.
 
