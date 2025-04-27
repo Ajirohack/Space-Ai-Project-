@@ -83,3 +83,4 @@ bower_components
 # Private folders - DO NOT COMMIT
 developer-folder/
 documentation/
+internal-modules/tools-packages/proposed-untested/
