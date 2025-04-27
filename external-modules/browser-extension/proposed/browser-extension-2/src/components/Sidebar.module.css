@@ -1,0 +1,7 @@
+.sidebar {
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar.closed {
+    transform: translateX(100%);
+}

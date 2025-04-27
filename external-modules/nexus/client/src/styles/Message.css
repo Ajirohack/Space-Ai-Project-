@@ -1,0 +1,102 @@
+.message {
+  display: flex;
+  margin: 1.5rem 0;
+  max-width: 85%;
+  gap: 12px;
+}
+
+.nexus-message {
+  margin-right: auto;
+}
+
+.user-message {
+  margin-left: auto;
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.message-content {
+  background-color: var(--message-bg-nexus);
+  border-radius: 12px;
+  padding: 12px 16px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nexus-message .message-content {
+  border-top-left-radius: 4px;
+  border-left: 2px solid var(--primary-color);
+}
+
+.user-message .message-content {
+  border-top-right-radius: 4px;
+  background-color: var(--message-bg-user);
+  border-right: 2px solid var(--primary-color);
+}
+
+.message-text {
+  color: var(--text-color);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.attachments-container {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attachment {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.attachment.image img {
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.attachment.document a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: rgba(200, 179, 140, 0.1);
+  border-radius: 6px;
+  color: var(--light-text);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.attachment.document a:hover {
+  background-color: rgba(200, 179, 140, 0.2);
+}
+
+.document-icon {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.attachment.audio audio {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+}
+
+.message-timestamp {
+  font-size: 0.75rem;
+  color: var(--light-text);
+  margin-top: 4px;
+  text-align: right;
+  opacity: 0.7;
+}

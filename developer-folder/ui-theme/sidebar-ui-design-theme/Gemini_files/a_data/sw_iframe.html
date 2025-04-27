@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+  <script>
+'use strict';class m{constructor(a){this.j=a;this.g={};this.h={};this.i=0;this.id=String(Math.floor(Number.MAX_SAFE_INTEGER*Math.random()))}}function n(a){return a.performance&&a.performance.now()||Date.now()}
+var p=function(a,b){class d{constructor(c,f,g){this.failureType=c;this.data=f;this.g=g;this.h=new m(n(g))}s(c,f){const g=c.clientId;if(c.type===0){c.isDead=!0;var e=this.h,h=n(this.g);e.g[g]==null&&(e.g[g]=0,e.h[g]=h,e.i++);e.g[g]++;c.stats={targetId:e.id,clientCount:e.i,totalLifeMs:Math.round(h-e.j),heartbeatCount:e.g[g],clientLifeMs:Math.round(h-e.h[g])}}c.failure={failureType:this.failureType,data:this.data};f(c)}}return new d(5,a,b)};/*
+
+ Copyright Google LLC
+ SPDX-License-Identifier: Apache-2.0
+*/
+let q=globalThis.trustedTypes,r;function t(){let a=null;if(!q)return a;try{const b=d=>d;a=q.createPolicy("goog#html",{createHTML:b,createScript:b,createScriptURL:b})}catch(b){}return a};var u=class{constructor(a){this.g=a}toString(){return this.g+""}};function v(a){const b=a;var d;r===void 0&&(r=t());d=r;return new u(d?d.createScriptURL(b):b)}function w(a){if(a instanceof u)return a.g;throw Error("");};function x(a,...b){if(b.length===0)return v(a[0]);let d=a[0];for(let c=0;c<b.length;c++)d+=encodeURIComponent(b[c])+a[c+1];return v(d)}function y(a){var b=x`sw.js`,d=w(b).toString();const c=d.split(/[?#]/),f=/[?]/.test(d)?"?"+c[1]:"";return z(c[0],f,/[#]/.test(d)?"#"+(f?c[2]:c[1]):"",a)}
+function z(a,b,d,c){function f(e,h){e!=null&&(Array.isArray(e)?e.forEach(l=>f(l,h)):(b+=g+encodeURIComponent(h)+"="+encodeURIComponent(e),g="&"))}let g=b.length?"&":"?";c.constructor===Object&&(c=Object.entries(c));Array.isArray(c)?c.forEach(e=>f(e[1],e[0])):c.forEach(f);return v(a+b+d)};const A=/Chrome\/(\d+)/;var C=function(a){const b=a.origin;if(b){var d=a.o?"swe.js":"sw.js",c=a.g?x`/static/service_worker/${a.g}/${d}?origin=${b}`:x`/gtm/static/${d}?origin=${b}`,f=new Map([["origin",b]]);a.h&&f.set("path",a.h);var g=a.l?y(f):c,e=()=>{const k=A.exec(a.window.navigator.userAgent);return k&&Number(k[1])<119},h=a.window.document.location.href;a.g&&(a.l?h=`${a.h}/_/service_worker`:e()||(h="/static/service_worker"));var l={scope:h};a.g&&(l.updateViaCache="all");a.window.navigator.serviceWorker.register(w(g),
+l).then(()=>{a.window.navigator.serviceWorker.ready.then(k=>{a.i=k.active;B(a)})},k=>{a.j=p(k==null?void 0:k.toString(),a.window);B(a)});a.window.navigator.serviceWorker.addEventListener("message",k=>{a.window.parent.postMessage(k.data,a.origin)})}},B=function(a){const b=a.m.slice();a.m=[];for(const d of b)a.handleEvent(d)};
+(new class{constructor(a){this.window=a;this.origin="";this.o=this.l=!1;this.h="";this.j=this.i=null;this.m=[];this.g=""}init(){if((f=>{try{return f!==f.top}catch(g){return!0}})(this.window)){var a=new URL(this.window.document.location.href),b=a.searchParams.get("origin");if(b){this.origin=b;this.l=!!a.searchParams.get("1p");this.o=!!a.searchParams.get("e");this.h=a.searchParams.get("path")||"";var d=a.pathname.match(RegExp(".*/service_worker/(\\w+)/"));d&&d.length&&(this.g=d[1]);var c=this.window.document.location.ancestorOrigins;
+c&&c[0]!==this.origin||(C(this),this.window.addEventListener("message",f=>{this.handleEvent(f)}))}}}handleEvent(a){a.origin===this.origin&&(this.i?this.i.postMessage(a.data):this.j?this.j.s(a.data,b=>{this.window.parent.postMessage(b,this.origin)}):this.m.push(a))}}(window)).init();
+  </script>
+
+</body></html>

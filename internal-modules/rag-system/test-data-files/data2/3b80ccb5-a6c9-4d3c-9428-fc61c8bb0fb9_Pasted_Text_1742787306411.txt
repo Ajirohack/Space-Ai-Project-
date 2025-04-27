@@ -1,0 +1,99 @@
+# **PROJECT Y - SPACE WH**
+---
+### **What is Project Y**
+Project Y is the successor and continuation of Project X. Kindly find Below What brief overview of Project X:
+
+[Project X Documentation version 2 Longer](https://www.notion.so/Project-X-Documentation-version-2-Longer-1b8251bd12db807aa425d72595577ced?pvs=4)
+
+In project Y we will be tagging it the creation of "SPACE WH" Which stands for  Space and Whyte Houx (which is the start-up company developing the project which is me). 
+
+This project will be based on developing our findings from Project X and also setting up some of planned project. Such as;
+1. The SpaceWH - The main project for Project Y
+2. Orchestrator - Tool for working
+3. The Creator - Tool for working
+4. BluePrint for further development - Guidelines for Improving.
+========================
+### **Space WH Project:**
+
+This is a proposed **"Artificial Intelligent Tools Dashboard"** where members of Whyte Houx (WH) initiatives can connect their various CHAT BOT or Assistance BOT to Private Tools by WH Initiative. And these tools are only available to Strictly Member. With the connection, Member can instruct or initiate their BOT or Assistant to use any of the Tools.  So because of the complexity of the project, the project was phased into Four developmental stages;
+***Current Project = Project Y***
+First Dev Stage: This involves improving and developing on finding from "Project X" which was based on bring Diego GPT to live. But still very closely managed and not made for members use, only for testing phase
+
+***Other Projects**
+Second: Improvement from previous Stage, like an update... But still very closely managed and not made for members use, only trials with comments
+Third: First deployment for member's trials, to generate comments from other and to create room for improvements suggested by members
+Fourth Stage: Final Deployment for the Initiative use.
+
+===========================
+
+**First Dev Stage** nick named "Project Y" is further divided into different steps. 
+These steps involves;
+1. Whyte Houx Membership Registration System named "MEMBERSHIP INITIATION SYSTEM [MIS]"
+2. Development of Intelligent Artificial Intelligence "AI" Software, used as a Tool by the Developers of the Project to ease their workloads. These tools are; The Orchestrator and The Creator
+3. initial developmental Web lunch
+4. Development of in-house AI Model(s) for project use.
+5. Creating of "INITIATIVE PROPOSAL" to approach investors
+
+===================================
+#### **MEMBERSHIP INITIATION SYSTEM [MIS]**
+
+Also known as The Membership Initiation of the **"Space WH Project"**.  
+
+*Just as i previously explained the meaning of SpaceWH and Objective of the project.:
+SpaceWH: Space stands for Space and WH stands for "Whyte Houx" which is the name of The company working on the project which is "mine". It's an AI project hosted in a Space themed web user interface UI. It's like a dashboard  where members only can attach/connect their "In-house AI assistance Bot" or "Private BOT" to various Tools provided by the WH (Whyte Houx). With these connections, the member's BOT can easily automate and use these tools that it as been connected to or exposed to. Lets say it's like an Ai Agent Toolbox for use. 
+
+With that out of the way, Let's talk about Membership Initiation (Registration) as i like to call it, is where "The Membership Initiation System" "MIS" comes in. The MIS is a highly secured and **restricted membership registration website/platform** that uses **AI-assisted system for Initiation Interview/onboarding**. This website/platform is divided into 2 phases.
+
+The UI for users and UI for Admins only, and this include:
+1. The Invitation code system for Generating Invitation Code/QR Code for Invited Persons to join. that will be sent to the Person 
+2. The The Member initiation interview clearance for final clearance.
+
+The UI for user: this is the webpage / web includes: 
+1.  The Portal/webpage for accepting Invitation Code
+2. Onboarding or initiation Process interview Page where user interact with AI using Voice and user answering with voice or Text.
+
+Core System Components of **Membership Registration (By Invitation Only)**
+This phase controls "**who can join Space WH Platform**", ensuring exclusivity.
+
+**💡 Proposed Registration Process**
+
+1. **Invitation Code Issuance (Admin-Generated)**
+    - Admin generates a **unique alphanumeric** **Invitation Code** (15-20 chars).
+    - Code is **linked to the invited person’s full name**.
+    - Sent **via email, QR code, or encrypted link**, along with a **4-digit PIN**.
+2. **QR Code & PIN Authentication**
+    - User **scans the QR code** (or visits the encrypted link).
+    - The page is **blurred out** until the **4-digit PIN** is entered.
+    - Once validated, the **AI-assisted onboarding process begins**.
+3. **AI-Assisted Onboarding (Voice-Driven)**
+    - **AI verifies** the user's **full name** (to match Invitation Code).
+    - AI **explains Space WH policies, rules, and responsibilities**.
+    - AI **asks for verbal consent** (recorded as part of offline verification).
+    - If the user **accepts**, the request is **sent to admin for final approval**.
+4. **Offline Verification & Membership Code Issuance**
+    - Admin **reviews the AI-captured data**.
+    - If approved, the **Membership Code** is sent to the user.
+    - The user is now eligible to **download & install the Space WH App**.
+
+Security & Authentication**
+
+Space WH requires **multi-layered security measures** to prevent unauthorized access.
+
+##### **Multi-Factor Authentication (MFA)**
+
+✅ **Step 1:** **Invitation Code** (matches name in system)
+
+✅ **Step 2:** **4-digit PIN** (from QR email)
+
+✅ **Step 3:** **AI Identity Verification (voice-based)**
+
+✅ **Step 4:** **Membership Code Issuance** (grants platform access)
+
+##### **Secure Login & Membership Key**
+
+- **Membership Code** → Used for **dashboard login** (until full initiation).
+- **Membership Key** → A **permanent unique identifier** stored in the **database**, tracking:
+    - **Member actions**
+    - **Usage history**
+    - **Feature access rights**
+    - **Temporary revocation capability**

@@ -1,0 +1,45 @@
+import React from 'react';
+import { formatFileSize } from '../utils/formatters';
+
+function AttachmentPreview({ attachment, onRemove }) {
+  const renderPreview = () => {
+    switch (attachment.type) {
+      case 'image':
+        return (
+          <div className="attachment-preview image-preview">
+            <img src={attachment.url} alt={attachment.name} />
+          </div>
+        );
+      case 'document':
+        return (
+          <div className="attachment-preview document-preview">
+            <div>📄</div>
+            <span>{attachment.name}</span>
+          </div>
+        );
+      case 'audio':
+        return (
+          <div className="attachment-preview audio-preview">
+            <audio controls src={attachment.url}></audio>
+            <span>Voice message</span>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="pending-attachment">
+      {renderPreview()}
+      <button 
+        className="remove-attachment" 
+        onClick={() => onRemove(attachment)}
+      >
+        ✕
+      </button>
+    </div>
+  );
+}
+
+export default AttachmentPreview;

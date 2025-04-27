@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Nexus Design System Theme Tokens */
+:root {
+  --nexus-accent: #6E56CF;
+  --nexus-accent-hover: #5845AC;
+  --subtle-accent: #A594E0;
+  --primary-bg-color: #FAFAFA;
+  --secondary-bg-color: #F0F0F0;
+  --primary-text-color: #121212;
+  --secondary-text-color: #5E5E5E;
+  --border-color: #E0E0E0;
+  --input-bg-color: #FFFFFF;
+  --message-user-bg: #F0F0F0;
+  --message-nexus-bg: #FFFFFF;
+  --icon-color: #5E5E5E;
+  --icon-hover-bg: rgba(0, 0, 0, 0.05);
+  --font-size-tiny: 12px;
+  --font-size-small: 14px;
+  --font-size-regular: 16px;
+  --font-size-medium: 18px;
+  --font-size-large: 20px;
+  --font-size-xl: 24px;
+  --font-size-xxl: 32px;
+  --font-size-xxxl: 48px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+.dark-theme, [data-theme="dark"] {
+  --primary-bg-color: #121212;
+  --secondary-bg-color: #1E1E1E;
+  --primary-text-color: #FAFAFA;
+  --secondary-text-color: #B0B0B0;
+  --border-color: #2D2D2D;
+  --input-bg-color: #1E1E1E;
+  --message-user-bg: #2D2D2D;
+  --message-nexus-bg: #1E1E1E;
+  --icon-color: #B0B0B0;
+  --icon-hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background-color: rgb(var(--background-rgb));
+}
+
+/* Custom scrollbar for dashboard */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.7);
+}
+
+/* Define utility classes for the dashboard */
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden;
+  }
+  
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-200 dark:border-gray-700;
+  }
+  
+  .card-body {
+    @apply p-6;
+  }
+  
+  .form-input {
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white;
+  }
+}

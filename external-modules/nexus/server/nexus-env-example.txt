@@ -1,0 +1,14 @@
+# Server configuration
+PORT=3001
+NODE_ENV=development
+
+# LLM provider settings
+# Options: 'openai', 'anthropic', 'mock'
+LLM_PROVIDER=mock
+LLM_API_KEY=your_api_key_here
+
+# Logging
+LOG_LEVEL=info
+
+# Memory settings
+MEMORY_STORAGE_PATH=./data

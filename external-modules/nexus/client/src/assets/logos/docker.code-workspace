@@ -1,0 +1,56 @@
+{
+	"folders": [
+		{
+			"path": "../../../docker"
+		},
+		{
+			"path": "../../../public"
+		},
+		{
+			"path": "../../../node_modules"
+		},
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../public/logos"
+		},
+		{
+			"path": "../../../services"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../components"
+		},
+		{
+			"path": "../../components/services"
+		},
+		{
+			"path": "../../styles"
+		},
+		{
+			"path": "../../services"
+		},
+		{
+			"path": "../../utils"
+		},
+		{
+			"path": "../../../../docker"
+		},
+		{
+			"path": "../../../../nexus-interface-project"
+		},
+		{
+			"path": "../../../../node_modules"
+		},
+		{
+			"path": "../../../../server"
+		}
+	],
+	"settings": {}
+}

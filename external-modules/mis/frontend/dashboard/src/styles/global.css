@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles for glassmorphism theme */
+@layer base {
+  :root {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+    
+    --primary: 210 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 220 16% 22%;
+    --secondary-foreground: 210 40% 96%;
+    
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    @apply bg-gradient-to-br from-gray-900 to-gray-950 text-gray-100 min-h-screen;
+  }
+
+  /* Custom scrollbar for webkit browsers */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(10, 10, 10, 0.2);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.5);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.7);
+  }
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300;
+  }
+  
+  .glass {
+    @apply bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl shadow-xl;
+  }
+  
+  .glass-dark {
+    @apply bg-black/30 backdrop-blur-md border border-white/5 rounded-xl shadow-xl;
+  }
+  
+  /* Radial gradient background */
+  .bg-gradient-radial {
+    background: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
+  }
+  
+  /* Input and form styles */
+  .input-glass {
+    @apply bg-white/5 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+  }
+  
+  /* Button styles */
+  .btn-primary {
+    @apply py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply py-3 px-4 bg-white/20 hover:bg-white/30 text-white rounded-lg font-medium transition-colors duration-200;
+  }
+  
+  .btn-success {
+    @apply py-3 px-4 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors duration-200;
+  }
+  
+  .btn-danger {
+    @apply py-3 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200;
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Media player styling */
+audio {
+  @apply rounded-md bg-black/30;
+}
+
+audio::-webkit-media-controls-panel {
+  @apply bg-gray-800;
+}
+
+audio::-webkit-media-controls-play-button {
+  @apply text-blue-500;
+}
+
+/* Form field focus states */
+input:focus, textarea:focus, select:focus {
+  @apply outline-none ring-2 ring-blue-500 border-blue-500;
+}
+
+/* Toast notifications */
+.toast {
+  @apply glass fixed bottom-4 right-4 p-4 min-w-[320px] z-50;
+}
+
+.toast-success {
+  @apply border-green-500;
+}
+
+.toast-error {
+  @apply border-red-500;
+}
+
+.toast-warning {
+  @apply border-yellow-500;
+}
+
+.toast-info {
+  @apply border-blue-500;
+}

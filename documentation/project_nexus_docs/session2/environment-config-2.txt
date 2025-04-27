@@ -1,0 +1,54 @@
+# .env.example
+# Project Nexus Environment Configuration
+# Copy this file to .env and update with your actual values
+
+# Server Configuration
+NODE_ENV=development
+PORT=5000
+UPLOAD_DIR=./uploads
+DATA_DIR=./data
+
+# LLM Provider Configuration
+# Options: openrouter, groq, openai, anthropic, llama, openwebui, mock
+LLM_PROVIDER=openrouter
+LLM_API_KEY=your_api_key_here
+LLM_BASE_URL=https://openrouter.ai/api/v1
+
+# OpenRouter Configuration (when LLM_PROVIDER=openrouter)
+OPENROUTER_API_KEY=your_openrouter_api_key
+
+# Groq Configuration (when LLM_PROVIDER=groq)
+GROQ_API_KEY=your_groq_api_key
+GROQ_API_URL=https://api.groq.com/openai/v1
+
+# OpenAI Configuration (when LLM_PROVIDER=openai)
+OPENAI_API_KEY=your_openai_api_key
+
+# Anthropic Configuration (when LLM_PROVIDER=anthropic)
+ANTHROPIC_API_KEY=your_anthropic_api_key
+
+# Llama Configuration (when LLM_PROVIDER=llama)
+LLAMA_API_URL=http://localhost:8080
+
+# Open Web UI Configuration (when LLM_PROVIDER=openwebui)
+OPENWEBUI_API_URL=http://localhost:1234/v1
+OPENWEBUI_API_KEY=your_openwebui_api_key
+
+# Memory Configuration
+MEMORY_WORKING_CAPACITY=20
+MEMORY_CONSOLIDATION_INTERVAL=3600000 # 1 hour in milliseconds
+
+# Personality Configuration
+PERSONALITY_PROFILE=default
+PERSONALITY_FORMALITY=0.7
+PERSONALITY_EXPRESSIVENESS=0.8
+PERSONALITY_ENTHUSIASM=0.6
+
+# Security Configuration
+JWT_SECRET=your_jwt_secret_here
+SESSION_SECRET=your_session_secret_here
+CORS_ORIGIN=http://localhost:3000
+
+# Database Configuration (for future use)
+# DB_URI=mongodb://localhost:27017/nexus
+# REDIS_URI=redis://localhost:6379

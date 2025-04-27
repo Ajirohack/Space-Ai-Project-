@@ -1,0 +1,24 @@
+{
+  "name": "@the-space/rag-system",
+  "version": "1.0.0",
+  "description": "RAG System for the-space Control Center",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@langchain/openai": "^0.0.x",
+    "@pinecone-database/pinecone": "^2.0.0",
+    "dotenv": "^16.4.x",
+    "langchain": "^0.1.x",
+    "zod": "^3.22.x"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.x",
+    "ts-node": "^10.9.x",
+    "ts-node-dev": "^2.0.x",
+    "typescript": "^5.3.x"
+  }
+}

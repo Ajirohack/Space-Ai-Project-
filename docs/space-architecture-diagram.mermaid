@@ -1,0 +1,79 @@
+graph TB
+    %% Frontend Components
+    subgraph Frontends
+        NexusFE["Nexus Frontend"]
+        MISFE["MIS Frontend"]
+        MobileAppFE["Mobile App Frontend"]
+        BrowserExtFE["Browser Extension Frontend"]
+    end
+
+    %% Backend Components
+    subgraph Backends
+        NexusBE["Nexus Backend"]
+        MISBE["Membership Initiation System Backend"]
+        MobileAppBE["Mobile App Backend"]
+        BrowserExtBE["Browser Extension Chatbot"]
+        TelegramBot["Telegrambot Engine"]
+        TempStorage["Temporary Data Storage"]
+    end
+    
+    %% Control Layer
+    ApiGateway["API Gateway/Control"] 
+    
+    %% Core System - Control Center
+    subgraph ControlCenter["CONTROL CENTER - Unified Backend Control"]
+        CCDashboard["Control Center Dashboard\nClient Modules Integration Interface"]
+        
+        subgraph InternalModules["Internal Modules"]
+            RAG["RAG SYSTEM\nDatabase, KB, Memory/Context Bank, Storage"]
+            Tools["TOOLS/PACKAGES\nTools, Packages, Extensive Capability"]
+            AICouncil["AI COUNCIL\nMulti-Agentic AI Control and AI Agents"]
+        end
+        
+        Integration["User Integration Layer\nExternal Modules with Admin Controls"]
+    end
+    
+    %% Connections between Frontend and Backend
+    NexusFE <--> NexusBE
+    MISFE <--> MISBE
+    MobileAppFE <--> MobileAppBE
+    BrowserExtFE <--> BrowserExtBE
+    
+    %% Backend interconnections
+    NexusBE <--> TempStorage
+    TelegramBot --> NexusBE
+    MobileAppBE <--> MISBE
+    BrowserExtBE <--> MobileAppBE
+    
+    %% Backend to Control Center connections
+    NexusBE --> ApiGateway
+    MISBE --> ApiGateway
+    MobileAppBE --> ApiGateway
+    BrowserExtBE --> ApiGateway
+    
+    %% API Gateway to Control Center
+    ApiGateway --> ControlCenter
+    
+    %% Internal Control Center connections
+    CCDashboard <--> Integration
+    Integration <--> AICouncil
+    Integration <--> Tools
+    Integration <--> RAG
+    
+    %% Data flow to storage
+    TempStorage --> RAG
+    
+    %% Visual styles
+    classDef frontend fill:#d4f1f9,stroke:#333,stroke-width:1px
+    classDef backend fill:#b19cd9,stroke:#333,stroke-width:1px
+    classDef controlcenter fill:#ffd700,stroke:#333,stroke-width:2px
+    classDef internalmodule fill:#90ee90,stroke:#333,stroke-width:1px
+    classDef apigateway fill:#ff9966,stroke:#333,stroke-width:1px
+    classDef storage fill:#e6e6e6,stroke:#333,stroke-width:1px
+    
+    class NexusFE,MISFE,MobileAppFE,BrowserExtFE frontend
+    class NexusBE,MISBE,MobileAppBE,BrowserExtBE,TelegramBot backend
+    class ControlCenter,CCDashboard,Integration controlcenter
+    class RAG,Tools,AICouncil internalmodule
+    class ApiGateway apigateway
+    class TempStorage storage

@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "airbnb-base",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "no-console": "warn",
+    "import/prefer-default-export": "off",
+    "max-len": ["error", { "code": 100, "ignoreUrls": true }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-underscore-dangle": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.js", "**/*.test.ts", "**/*.spec.js", "**/*.spec.ts"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "no-unused-expressions": "off"
+      }
+    }
+  ]
+}

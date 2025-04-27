@@ -1,0 +1,66 @@
+import React, { useState } from 'react';
+import App from './App';
+import './AccessScreen.css';
+
+function AccessScreen() {
+  const [apiKey, setApiKey] = useState('');
+  const [showInput, setShowInput] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleClick = () => {
+    if (!showInput) {
+      setShowInput(true);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Validate API key (in a real app, this would be done on the server)
+    if (apiKey === '1234567890') {
+      setAuthenticated(true);
+      setError('');
+    } else {
+      setError('Invalid API key. Please try again.');
+    }
+  };
+
+  if (authenticated) {
+    return <App />;
+  }
+
+  return (
+    <div className="access-container" onClick={handleClick}>
+      <div className={`logo-container ${showInput ? 'blur' : ''}`}>
+        <div className="nexus-logo">
+          <div className="nexus-logo-inner">
+            <div className="nexus-logo-pulse"></div>
+          </div>
+        </div>
+        <h1>NEXUS</h1>
+      </div>
+      
+      {showInput && (
+        <div className="api-key-modal" onClick={(e) => e.stopPropagation()}>
+          <h2>Enter API Key</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="input-wrapper">
+              <input
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="Enter your API key"
+                autoFocus
+              />
+            </div>
+            {error && <p className="error-message">{error}</p>}
+            <button type="submit">Access Nexus</button>
+          </form>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default AccessScreen;

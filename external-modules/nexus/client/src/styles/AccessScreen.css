@@ -1,0 +1,242 @@
+.access-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212;
+    color: #f5f5f5;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    transition: opacity 0.8s ease;
+}
+
+.access-container.fade-out {
+    opacity: 0;
+}
+
+.background-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/logos/background-pattern.png');
+    background-size: 300px;
+    background-position: center;
+    opacity: 0.03;
+    z-index: 0;
+    filter: contrast(120%) brightness(150%);
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.6s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.logo-container.blur {
+    filter: blur(8px);
+    transform: scale(0.92);
+    opacity: 0.5;
+}
+
+.logo-wrapper {
+    margin-bottom: 20px;
+    animation: float 6s ease-in-out infinite;
+    position: relative;
+    filter: drop-shadow(0 0 20px rgba(200, 179, 140, 0.4));
+}
+
+.logo-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    bottom: -20px;
+    left: 0;
+    background: radial-gradient(ellipse at center, rgba(200, 179, 140, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
+    border-radius: 50%;
+}
+
+.nexus-logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nexus-logo-image {
+    filter: brightness(1.1) contrast(1.1);
+    transition: transform 0.3s ease;
+}
+
+.nexus-logo-image:hover {
+    transform: scale(1.05);
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.logo-container h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 8px;
+    margin: 0;
+    color: #C8B38C;
+    text-shadow: 0 0 15px rgba(200, 179, 140, 0.5);
+}
+
+.api-key-modal {
+    position: absolute;
+    background: rgba(18, 18, 18, 0.85);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(255, 196, 0, 0.2);
+    border: 1px solid rgba(255, 196, 0, 0.2);
+    max-width: 500px;
+    width: 85%;
+    animation: modalAppear 0.5s forwards;
+    z-index: 10;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.api-key-modal input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid rgba(255, 196, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    color: #f5f5f5;
+    outline: none;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+
+.api-key-modal input:focus {
+    border-color: #FFC400;
+    box-shadow: 0 0 0 3px rgba(255, 196, 0, 0.2);
+}
+
+.api-key-modal input::placeholder {
+    color: rgba(245, 245, 245, 0.5);
+}
+
+.api-key-modal button {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #FFC400, #FF8A00);
+    color: #121212;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.api-key-modal button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.api-key-modal button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.api-key-modal button:hover::before {
+    left: 100%;
+}
+
+.error-message {
+    color: #FF6B6B;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 10px;
+    background-color: rgba(255, 107, 107, 0.1);
+    border-radius: 5px;
+    border-left: 3px solid #FF6B6B;
+}
+
+/* Shake animation for error feedback */
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    15% {
+        transform: translateX(-10px);
+    }
+
+    30% {
+        transform: translateX(10px);
+    }
+
+    45% {
+        transform: translateX(-8px);
+    }
+
+    60% {
+        transform: translateX(8px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    90% {
+        transform: translateX(4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+}

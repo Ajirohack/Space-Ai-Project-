@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  open-webui-diego:
+    build: .
+    container_name: open-webui-diego
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/backend/data
+    environment:
+      - OLLAMA_API_BASE_URL=http://host.docker.internal:11434/api
+      # Add any other Open WebUI environment variables here
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

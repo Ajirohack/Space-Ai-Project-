@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@api-gateway/*": ["api-gateway/*"],
+      "@control-center/*": ["control-center/*"],
+      "@internal-modules/*": ["internal-modules/*"],
+      "@external-modules/*": ["external-modules/*"]
+    }
+  },
+  "include": [
+    "api-gateway/**/*.ts",
+    "control-center/**/*.ts",
+    "internal-modules/**/*.ts",
+    "external-modules/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}

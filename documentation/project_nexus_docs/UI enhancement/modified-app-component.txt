@@ -1,0 +1,335 @@
+import React, { useState, useRef, useEffect } from 'react';
+import './App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faFile, faImage, faPaperPlane, faStop } from '@fortawesome/free-solid-svg-icons';
+import Message from './components/Message';
+import AttachmentPreview from './components/AttachmentPreview';
+import nexusApi from './services/nexusApi';
+import { getCurrentTime } from './utils/formatters';
+
+function App() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [attachments, setAttachments] = useState([]);
+  const messagesEndRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const imageInputRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+
+  // Scroll to bottom of messages when new ones arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Initialize Nexus with a greeting when the app loads
+  useEffect(() => {
+    const initNexus = async () => {
+      if (!isInitialized) {
+        try {
+          await nexusApi.initializeNexus();
+          
+          setTimeout(() => {
+            const initialMessage = {
+              text: `Hello, I am Nexus. I'm here to assist and interact with you. How can I help you today?`,
+              timestamp: getCurrentTime(),
+            };
+            setMessages([{ ...initialMessage, sender: 'nexus' }]);
+            setIsInitialized(true);
+          }, 1000);
+        } catch (error) {
+          console.error('Error initializing Nexus:', error);
+          setIsInitialized(true); // Continue anyway
+        }
+      }
+    };
+    
+    initNexus();
+  }, [isInitialized]);
+  
+  // Handle file uploads
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Create a URL for the file
+    const fileUrl = URL.createObjectURL(file);
+    
+    // Add to attachments
+    setAttachments(prev => [...prev, {
+      type: 'document',
+      name: file.name,
+      url: fileUrl,
+      file: file
+    }]);
+    
+    // Reset file input
+    event.target.value = null;
+  };
+  
+  // Handle image uploads
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Only accept images
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file.');
+      return;
+    }
+    
+    // Create a URL for the image
+    const imageUrl = URL.createObjectURL(file);
+    
+    // Add to attachments
+    setAttachments(prev => [...prev, {
+      type: 'image',
+      name: file.name,
+      url: imageUrl,
+      file: file
+    }]);
+    
+    // Reset file input
+    event.target.value = null;
+  };
+  
+  // Handle voice recording
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+      
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+      
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        
+        // Add to attachments
+        setAttachments(prev => [...prev, {
+          type: 'audio',
+          name: 'Voice message',
+          url: audioUrl,
+          file: audioBlob,
+          duration: mediaRecorderRef.current.duration || null
+        }]);
+        
+        setIsRecording(false);
+      };
+      
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error starting voice recording:', error);
+      alert('Failed to access microphone. Please check your permissions.');
+    }
+  };
+  
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      // Stream cleanup
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+    }
+  };
+  
+  // Remove an attachment
+  const removeAttachment = (attachmentToRemove) => {
+    setAttachments(prev => 
+      prev.filter(attachment => attachment !== attachmentToRemove)
+    );
+  };
+  
+  // Send message to backend
+  const sendMessageToNexus = async (messageText, attachments = []) => {
+    try {
+      setIsProcessing(true);
+
+      // Process attachments if present
+      let processedAttachments = [];
+      if (attachments.length > 0) {
+        processedAttachments = await Promise.all(attachments.map(async (attachment) => {
+          // In a real implementation, you would upload the files to a server
+          return {
+            type: attachment.type,
+            url: attachment.url,
+            name: attachment.name
+          };
+        }));
+      }
+
+      // Use the API service to send the message with attachments
+      const responseText = await nexusApi.sendMessage(messageText, processedAttachments);
+
+      const response = {
+        text: responseText,
+        timestamp: getCurrentTime(),
+      };
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...response, sender: 'nexus' }
+      ]);
+      setIsProcessing(false);
+    } catch (error) {
+      console.error('Error communicating with Nexus:', error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: "I apologize, but I'm having trouble processing your request. Please try again.",
+          timestamp: getCurrentTime(),
+          sender: 'nexus',
+        },
+      ]);
+      setIsProcessing(false);
+    }
+  };
+  
+  // Handle sending a message with possible attachments
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+
+    if (input.trim() === '' && attachments.length === 0) return;
+
+    const userMessage = {
+      text: input,
+      timestamp: getCurrentTime(),
+      sender: 'user',
+      attachments: attachments.length > 0 ? [...attachments] : null
+    };
+
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setInput('');
+    setAttachments([]);
+
+    // Send to Nexus backend
+    sendMessageToNexus(input, attachments);
+  };
+
+  return (
+    <div className="app">
+      <header className="app-header">
+        <div className="centered-logo">
+          <div className="nexus-logo">
+            <div className="nexus-logo-inner">
+              <div className="nexus-logo-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <main className="chat-container">
+        <div className="messages">
+          {messages.map((message, index) => (
+            <Message 
+              key={index} 
+              message={message} 
+              isNexus={message.sender === 'nexus'} 
+            />
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+        
+        {/* Display pending attachments */}
+        {attachments.length > 0 && (
+          <div className="pending-attachments">
+            {attachments.map((attachment, index) => (
+              <AttachmentPreview 
+                key={index}
+                attachment={attachment}
+                onRemove={removeAttachment}
+              />
+            ))}
+          </div>
+        )}
+        
+        <form className="input-area" onSubmit={handleSendMessage}>
+          <div className="modern-input-container">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Message Nexus..."
+              disabled={isProcessing || isRecording}
+            />
+            <button 
+              type="submit" 
+              className="send-button-inside"
+              disabled={isProcessing || (input.trim() === '' && attachments.length === 0) || isRecording}
+            >
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </button>
+          </div>
+          
+          {/* Hidden file inputs */}
+          <input 
+            type="file"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleFileUpload}
+            accept=".pdf,.doc,.docx,.txt,.csv,.xlsx"
+          />
+          
+          <input 
+            type="file"
+            ref={imageInputRef}
+            style={{ display: 'none' }}
+            onChange={handleImageUpload}
+            accept="image/*"
+          />
+          
+          {/* Attachment buttons */}
+          <div className="bottom-attachment-buttons">
+            <button 
+              type="button" 
+              className="circular-button"
+              onClick={() => fileInputRef.current.click()}
+              disabled={isProcessing || isRecording}
+            >
+              <FontAwesomeIcon icon={faFile} />
+            </button>
+            
+            <button 
+              type="button" 
+              className="circular-button"
+              onClick={() => imageInputRef.current.click()}
+              disabled={isProcessing || isRecording}
+            >
+              <FontAwesomeIcon icon={faImage} />
+            </button>
+            
+            {!isRecording ? (
+              <button 
+                type="button" 
+                className="circular-button"
+                onClick={startRecording}
+                disabled={isProcessing}
+              >
+                <FontAwesomeIcon icon={faMicrophone} />
+              </button>
+            ) : (
+              <button 
+                type="button" 
+                className="circular-button recording"
+                onClick={stopRecording}
+              >
+                <FontAwesomeIcon icon={faStop} />
+              </button>
+            )}
+          </div>
+        </form>
+      </main>
+    </div>
+  );
+}
+
+export default App;

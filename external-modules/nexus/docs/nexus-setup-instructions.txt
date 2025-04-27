@@ -1,0 +1,193 @@
+# Nexus Setup Guide
+
+This guide provides detailed instructions for setting up and running the Nexus digital entity framework. It's designed for developers with basic familiarity with JavaScript, React, Node.js, and npm.
+
+## System Requirements
+
+- **Node.js**: v14.x or later
+- **npm**: v7.x or later
+- **Operating System**: Windows 10+, macOS 10.15+, or Linux
+- **Memory**: At least 4GB RAM
+- **Disk Space**: At least 1GB free space
+
+## Installation Steps
+
+### 1. Clone the Repository
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/your-username/nexus.git
+cd nexus
+```
+
+### 2. Set Up the Project Structure
+
+If you're starting from scratch rather than cloning a repository, create the project structure as follows:
+
+```bash
+mkdir -p nexus/client/src/{components,services,utils}
+mkdir -p nexus/server/{controllers,memory,middleware,routes,utils,uploads,data,logs}
+touch nexus/client/src/index.js
+touch nexus/client/src/App.jsx
+touch nexus/client/src/App.css
+touch nexus/server/server.js
+```
+
+### 3. Copy the Files
+
+Copy all the source files into the appropriate directories according to the project structure outlined above. Make sure each file goes into its correct location.
+
+### 4. Install Dependencies
+
+#### Root Directory
+Create a package.json file in the root directory:
+
+```bash
+cd nexus
+npm init -y
+```
+
+Edit the package.json to include scripts for running both frontend and backend:
+
+```json
+{
+  "name": "nexus",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install"
+  },
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
+```
+
+Install the root dependencies:
+
+```bash
+npm install
+```
+
+#### Client Directory
+
+Navigate to the client directory and install dependencies:
+
+```bash
+cd client
+npm install
+```
+
+#### Server Directory
+
+Navigate to the server directory and install dependencies:
+
+```bash
+cd server
+npm install
+```
+
+### 5. Configure Environment Variables
+
+In the server directory, create a .env file based on the .env.example:
+
+```bash
+cd server
+cp .env.example .env
+```
+
+Edit the .env file to configure your environment:
+- If you have an API key for OpenAI or Anthropic, set LLM_PROVIDER accordingly and add your key
+- If not, leave it as "mock" for development purposes
+
+### 6. Start the Development Servers
+
+From the root directory, start both the frontend and backend servers:
+
+```bash
+npm run dev
+```
+
+This will launch:
+- The frontend at http://localhost:3000
+- The backend at http://localhost:3001
+
+## Verifying the Installation
+
+To verify that everything is working correctly:
+
+1. Open your browser and navigate to http://localhost:3000
+2. You should see the Nexus chat interface
+3. Wait for the initial greeting message from Nexus
+4. Try sending a message and check if you receive a response
+5. Test file uploads by clicking the attachment buttons
+6. Test voice recording if your browser supports it
+
+## Common Issues and Troubleshooting
+
+### Issue: "Module not found" errors
+
+**Solution**: Make sure all dependencies are installed:
+```bash
+npm run install-all
+```
+
+### Issue: Backend server won't start
+
+**Solution**: Check for port conflicts and ensure the correct Node.js version:
+```bash
+lsof -i :3001  # Check if port 3001 is already in use (on macOS/Linux)
+node -v        # Verify Node.js version
+```
+
+### Issue: File uploads not working
+
+**Solution**: Check that the uploads directory exists and has write permissions:
+```bash
+mkdir -p server/uploads
+chmod 755 server/uploads
+```
+
+### Issue: React app builds but shows blank screen
+
+**Solution**: Check browser console for errors and verify that the React app is correctly configured.
+
+### Issue: Memory system initialization fails
+
+**Solution**: Ensure the data directory exists and has appropriate permissions:
+```bash
+mkdir -p server/data
+chmod 755 server/data
+```
+
+## Using a Real LLM Provider
+
+To use a real language model instead of the mock responses:
+
+1. Sign up for an API key from OpenAI or Anthropic
+2. Edit the .env file to change LLM_PROVIDER to "openai" or "anthropic"
+3. Add your API key to LLM_API_KEY in the .env file
+4. Restart the server
+
+## Next Steps
+
+Once you have Nexus running, you can:
+
+1. Explore the memory system by having multiple conversations
+2. Customize the personality configuration in server/memory/personalityConfig.js
+3. Enhance the UI by modifying the React components
+4. Implement additional platform connectors beyond the chat interface
+
+## Support
+
+If you encounter issues not covered in this guide, please:
+1. Check the GitHub repository for existing issues
+2. Join our Discord community for real-time support
+3. Submit a detailed bug report if you've found a new issue
+
+Happy building!

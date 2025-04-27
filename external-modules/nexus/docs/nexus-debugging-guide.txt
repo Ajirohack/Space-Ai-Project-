@@ -1,0 +1,329 @@
+# Nexus Debugging Guide
+
+This guide provides solutions for common issues that might arise when setting up and running Nexus. Follow these troubleshooting steps to resolve problems you may encounter.
+
+## Frontend Issues
+
+### Issue: Blank Screen After Loading
+
+**Symptoms:**
+- Page loads but remains white/blank
+- No visible error messages on screen
+
+**Troubleshooting Steps:**
+1. Check browser console for JavaScript errors (F12 in most browsers)
+2. Verify the React app is building correctly
+3. Check network requests to ensure API endpoints are accessible
+4. Verify that the backend server is running
+
+**Solutions:**
+```bash
+# Rebuild the React app
+cd client
+npm run build
+
+# Check for syntax errors
+cd client
+npm run lint
+
+# Verify backend connectivity
+curl http://localhost:3001/api/status
+```
+
+### Issue: File Upload Not Working
+
+**Symptoms:**
+- Unable to select files
+- Files selected but not appearing in chat
+- Error messages when trying to upload
+
+**Troubleshooting Steps:**
+1. Check browser console for errors during file selection
+2. Verify that the file input elements have the correct accept attributes
+3. Check that file size is not too large
+4. Ensure server uploads directory exists and has proper permissions
+
+**Solutions:**
+```bash
+# Create uploads directory if missing
+mkdir -p server/uploads
+chmod 755 server/uploads
+
+# Check server logs for upload errors
+cat server/logs/error.log
+```
+
+### Issue: Voice Recording Not Working
+
+**Symptoms:**
+- Microphone button doesn't respond
+- Recording starts but immediately stops
+- No audio playback after recording
+
+**Troubleshooting Steps:**
+1. Check if the browser supports MediaRecorder API
+2. Verify microphone permissions are granted
+3. Inspect browser console for permissions errors
+
+**Solutions:**
+```javascript
+// Add this check in your app
+if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+  console.error("MediaDevices API not supported in this browser");
+  // Disable voice button or show alternative
+}
+```
+
+## Backend Issues
+
+### Issue: Server Won't Start
+
+**Symptoms:**
+- Error messages when running npm start
+- "Address already in use" errors
+- Dependency-related errors
+
+**Troubleshooting Steps:**
+1. Check if another process is using port 3001
+2. Verify all dependencies are installed
+3. Check for syntax errors in server code
+4. Ensure Node.js version is correct
+
+**Solutions:**
+```bash
+# Check for processes using the port
+lsof -i :3001    # macOS/Linux
+netstat -ano | findstr :3001    # Windows
+
+# Kill the process using the port
+kill -9 [PID]    # macOS/Linux
+taskkill /F /PID [PID]    # Windows
+
+# Reinstall dependencies
+cd server
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Issue: Memory System Initialization Fails
+
+**Symptoms:**
+- Server starts but logs memory initialization errors
+- Chat functionality doesn't work correctly
+- Messages are not remembered between sessions
+
+**Troubleshooting Steps:**
+1. Check server logs for specific errors
+2. Verify data directory exists and has correct permissions
+3. Ensure no corrupt JSON files exist in the data directory
+
+**Solutions:**
+```bash
+# Create data directory if missing
+mkdir -p server/data
+chmod 755 server/data
+
+# Reset memory files (warning: deletes all conversation history)
+rm -f server/data/episodic.json server/data/semantic.json
+```
+
+### Issue: LLM Integration Not Working
+
+**Symptoms:**
+- Generic responses only
+- Error messages about API keys
+- Timeout errors when sending messages
+
+**Troubleshooting Steps:**
+1. Check if LLM_PROVIDER and LLM_API_KEY are set correctly in .env
+2. Verify API key is valid and has not expired
+3. Check for rate limiting or quota issues with the LLM provider
+4. Ensure network connectivity to the LLM provider API
+
+**Solutions:**
+```bash
+# Test API connectivity (for OpenAI)
+curl https://api.openai.com/v1/models \
+  -H "Authorization: Bearer $YOUR_API_KEY"
+
+# Switch to mock provider for testing
+# In .env file:
+LLM_PROVIDER=mock
+```
+
+## Client-Server Communication Issues
+
+### Issue: API Requests Failing
+
+**Symptoms:**
+- "Failed to communicate with Nexus" error messages
+- Network errors in browser console
+- Backend running but frontend can't connect
+
+**Troubleshooting Steps:**
+1. Check for CORS issues in browser console
+2. Verify API URLs match the server address
+3. Ensure proxy is correctly configured in package.json
+
+**Solutions:**
+```bash
+# Verify API_BASE_URL in nexusApi.js
+# Should match the backend server URL
+
+# Check CORS configuration in server.js
+# Make sure it allows requests from frontend origin
+
+# Test API endpoint directly
+curl http://localhost:3001/api/status
+```
+
+### Issue: Attachments Not Loading in Chat
+
+**Symptoms:**
+- Uploaded files appear in messages but don't load
+- Broken image or file links
+- 404 errors in console when trying to access attachments
+
+**Troubleshooting Steps:**
+1. Check network requests for file paths
+2. Verify the uploaded files exist in the server/uploads directory
+3. Ensure the server is correctly serving static files
+
+**Solutions:**
+```javascript
+// Make sure server has correct static file middleware
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Check file URLs in frontend
+console.log("File URL:", attachment.url);
+// Should start with /uploads/ and link to a valid file
+```
+
+## Environment and Configuration Issues
+
+### Issue: Environment Variables Not Loading
+
+**Symptoms:**
+- Server uses default values instead of configured ones
+- "undefined" values for environment-dependent settings
+- Features dependent on environment variables not working
+
+**Troubleshooting Steps:**
+1. Verify .env file exists in the server directory
+2. Check .env file format for syntax errors
+3. Ensure dotenv is correctly imported and configured
+
+**Solutions:**
+```bash
+# Create .env from example if missing
+cd server
+cp .env.example .env
+
+# Check .env loading in server.js
+# Should be near the top:
+require('dotenv').config();
+```
+
+### Issue: Deployment Errors
+
+**Symptoms:**
+- Application works locally but fails when deployed
+- Path-related errors in logs
+- Missing dependencies in production
+
+**Troubleshooting Steps:**
+1. Check for differences between development and production environments
+2. Verify all dependencies are included in package.json (not devDependencies)
+3. Ensure environment variables are properly set in the production environment
+
+**Solutions:**
+```bash
+# Build for production
+cd client
+npm run build
+
+# Check for production-specific issues
+NODE_ENV=production node server/server.js
+
+# Verify all dependencies are properly saved
+npm list --prod
+```
+
+## Advanced Debugging
+
+### Server-Side Logging
+
+To enable more detailed logging for troubleshooting:
+
+```javascript
+// In server/.env
+LOG_LEVEL=debug
+
+// In your code, use different log levels
+logger.error('Critical error:', error);
+logger.warn('Warning condition:', warning);
+logger.info('Informational message');
+logger.debug('Detailed debug information');
+```
+
+### React DevTools
+
+Install React DevTools browser extension for debugging the React component structure:
+- [Chrome Extension](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
+- [Firefox Extension](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/)
+
+### Memory System Debugging
+
+To inspect the current state of the memory system:
+
+```javascript
+// Add a debug endpoint to server/server.js
+app.get('/api/debug/memory', (req, res) => {
+  if (process.env.NODE_ENV !== 'production') {
+    res.json({
+      episodicMemory: memorySystem.episodicMemory,
+      semanticMemory: memorySystem.semanticMemory,
+      initialized: memorySystem.initialized
+    });
+  } else {
+    res.status(403).json({ error: 'Debug endpoints disabled in production' });
+  }
+});
+```
+
+## Performance Issues
+
+### Issue: Slow Response Times
+
+**Symptoms:**
+- Long delays when sending messages
+- UI freezes during processing
+- Timeouts in API requests
+
+**Troubleshooting Steps:**
+1. Check server resource usage (CPU, memory)
+2. Monitor response times from LLM provider
+3. Check for memory leaks or excessive logging
+
+**Solutions:**
+```bash
+# Monitor server resource usage
+top -pid $(pgrep -f "node.*server.js")
+
+# Implement request timeout handling
+# In nexusApi.js:
+const response = await axios.post(`${API_BASE_URL}/api/chat`, {
+  // ...data
+}, { timeout: 30000 }); // 30-second timeout
+```
+
+## Getting Further Help
+
+If you've tried the solutions in this guide and are still experiencing issues:
+
+1. Check the GitHub repository issues section for similar problems
+2. Enable detailed logging and provide log output when seeking help
+3. Provide clear steps to reproduce the issue
+4. Include your environment details (OS, Node.js version, browser version)
+
+Remember that Nexus is still in Phase 1 development, and some features may have limitations that will be addressed in future phases.

@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+  <!-- Completely transparent base background -->
+  <rect width="1000" height="1000" fill="none" opacity="0"/>
+  
+  <!-- Outer ring - now filled black with white stroke -->
+  <circle cx="500" cy="500" r="450" fill="black" stroke="white" stroke-width="12"/>
+  
+  <!-- Inner circle - remains white with black stroke -->
+  <circle cx="500" cy="500" r="220" fill="white" stroke="black" stroke-width="12"/>
+  
+  <!-- Central symbols - unchanged -->
+  <!-- Top vertical lines -->
+  <rect x="470" y="340" width="20" height="80" fill="black"/>
+  <rect x="510" y="340" width="20" height="80" fill="black"/>
+  
+  <!-- Middle circles -->
+  <circle cx="480" cy="500" r="20" fill="black"/>
+  <circle cx="520" cy="500" r="20" fill="black"/>
+  
+  <!-- Bottom vertical lines -->
+  <rect x="470" y="580" width="20" height="80" fill="black"/>
+  <rect x="510" y="580" width="20" height="80" fill="black"/>
+  
+  <!-- Dividing lines for the 8 segments in outer ring - now white -->
+  <line x1="500" y1="50" x2="500" y2="280" stroke="white" stroke-width="8"/>
+  <line x1="950" y1="500" x2="720" y2="500" stroke="white" stroke-width="8"/>
+  <line x1="500" y1="950" x2="500" y2="720" stroke="white" stroke-width="8"/>
+  <line x1="50" y1="500" x2="280" y2="500" stroke="white" stroke-width="8"/>
+  
+  <line x1="803" y1="197" x2="640" y2="360" stroke="white" stroke-width="8"/>
+  <line x1="803" y1="803" x2="640" y2="640" stroke="white" stroke-width="8"/>
+  <line x1="197" y1="803" x2="360" y2="640" stroke="white" stroke-width="8"/>
+  <line x1="197" y1="197" x2="360" y2="360" stroke="white" stroke-width="8"/>
+  
+  <!-- TOP SEGMENT (12 o'clock) - Face/Mask - now white lines -->
+  <path d="M440,150 
+           C440,120 560,120 560,150
+           C560,190 580,210 500,260
+           C420,210 440,190 440,150 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <ellipse cx="475" cy="170" rx="13" ry="15" fill="white"/>
+  <ellipse cx="525" cy="170" rx="13" ry="15" fill="white"/>
+  <path d="M475,200 C485,220 515,220 525,200" fill="none" stroke="white" stroke-width="8"/>
+  
+  <!-- TOP RIGHT SEGMENT (1:30) - Animal/Figures - now white lines -->
+  <path d="M650,180
+           C660,170 675,170 685,180
+           C695,190 690,240 650,260
+           C650,220 645,200 650,180 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M630,220
+           C640,210 655,210 665,220
+           C675,230 670,250 660,260
+           C650,245 635,230 630,220 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M690,200
+           C700,190 715,190 725,200
+           C735,210 730,240 720,250
+           C710,235 700,210 690,200 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  
+  <!-- RIGHT SEGMENT (3 o'clock) - Fish - now white lines -->
+  <path d="M780,450
+           C820,430 860,460 845,510
+           C830,560 780,550 740,530
+           C710,515 720,470 780,450 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <circle cx="805" cy="490" r="14" fill="white"/>
+  <path d="M845,510 C860,520 865,535 860,550" fill="none" stroke="white" stroke-width="8"/>
+  
+  <!-- BOTTOM RIGHT SEGMENT (4:30) - Symbol/Tool - now white lines -->
+  <path d="M670,670
+           C680,660 695,660 705,670
+           C715,680 715,695 705,705
+           C695,715 680,715 670,705
+           C660,695 660,680 670,670 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M630,710
+           C640,700 655,700 665,710
+           C675,720 675,735 665,745
+           C655,755 640,755 630,745
+           C620,735 620,720 630,710 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <line x1="670" y1="705" x2="630" y2="745" stroke="white" stroke-width="8"/>
+  
+  <!-- BOTTOM SEGMENT (6 o'clock) - Serpent/Snake - now white lines -->
+  <path d="M420,840
+           C450,820 480,830 500,850
+           C520,830 550,820 580,840" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M420,840
+           C390,860 400,890 430,880
+           C460,870 480,860 500,850" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M580,840
+           C610,860 600,890 570,880
+           C540,870 520,860 500,850" 
+        fill="none" stroke="white" stroke-width="8"/>
+  
+  <!-- BOTTOM LEFT SEGMENT (7:30) - Symbol/Tool Mirror - now white lines -->
+  <path d="M330,670
+           C320,660 305,660 295,670
+           C285,680 285,695 295,705
+           C305,715 320,715 330,705
+           C340,695 340,680 330,670 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M370,710
+           C360,700 345,700 335,710
+           C325,720 325,735 335,745
+           C345,755 360,755 370,745
+           C380,735 380,720 370,710 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <line x1="330" y1="705" x2="370" y2="745" stroke="white" stroke-width="8"/>
+  
+  <!-- LEFT SEGMENT (9 o'clock) - Chain Links - now white lines -->
+  <path d="M140,430
+           C130,420 130,400 140,390
+           C150,380 170,380 180,390
+           C190,400 190,420 180,430
+           C170,440 150,440 140,430 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M180,430
+           C170,420 170,400 180,390
+           C190,380 210,380 220,390
+           C230,400 230,420 220,430
+           C210,440 190,440 180,430 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M220,470
+           C210,460 210,440 220,430
+           C230,420 250,420 260,430
+           C270,440 270,460 260,470
+           C250,480 230,480 220,470 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M180,470
+           C170,460 170,440 180,430
+           C190,420 210,420 220,430
+           C230,440 230,460 220,470
+           C210,480 190,480 180,470 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  
+  <!-- TOP LEFT SEGMENT (10:30) - Animal/Figures Mirror - now white lines -->
+  <path d="M350,180
+           C340,170 325,170 315,180
+           C305,190 310,240 350,260
+           C350,220 355,200 350,180 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M370,220
+           C360,210 345,210 335,220
+           C325,230 330,250 340,260
+           C350,245 365,230 370,220 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+  <path d="M310,200
+           C300,190 285,190 275,200
+           C265,210 270,240 280,250
+           C290,235 300,210 310,200 Z" 
+        fill="none" stroke="white" stroke-width="8"/>
+</svg>

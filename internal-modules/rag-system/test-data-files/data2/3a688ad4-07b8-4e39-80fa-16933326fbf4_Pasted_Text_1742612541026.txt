@@ -1,0 +1,174 @@
+
+
+To test the Space WH project, you can follow these steps:
+
+### 1. Test the Backend
+
+#### Using Postman:
+1. **Install Postman** if you haven't already.
+2. **Create a New Collection** for Space WH.
+3. **Add Requests** for each API endpoint:
+   - `POST /admin/generate-invitation` (requires admin JWT token)
+   - `POST /auth/verify-qr`
+   - `POST /auth/onboard`
+
+#### Using the Client Script:
+You can use the provided `client.js` script to test the API endpoints.
+
+```javascript client.js
+const axios = require('axios');
+
+async function testGenerateInvitation() {
+  const adminToken = 'your_admin_jwt_token'; // Replace with a valid admin token
+  const response = await axios.post(
+    'http://localhost:3000/admin/generate-invitation',
+    {
+      fullName: 'John Doe',
+      email: 'john.doe@example.com',
+      pin: '1234',
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+    }
+  );
+  console.log('Generated Invitation:', response.data);
+}
+
+async function testVerifyQR() {
+  const response = await axios.post('http://localhost:3000/auth/verify-qr', {
+    qrCode: 'your_invitation_code',
+    pin: '1234',
+  });
+  console.log('QR Verification:', response.data);
+}
+
+async function testOnboarding() {
+  const token = 'your_jwt_token_from_verifyQR'; // Replace with a valid token
+  const response = await axios.post(
+    'http://localhost:3000/auth/onboard',
+    {
+      fullName: 'John Doe',
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  console.log('Onboarding:', response.data);
+}
+
+// Run the tests
+testGenerateInvitation();
+testVerifyQR();
+testOnboarding();
+```
+
+### 2. Test the Frontend
+
+If you have a React frontend, you can test it by running:
+
+```bash
+npm start
+```
+
+### 3. End-to-End Testing
+
+You can use tools like [Cypress](https://www.cypress.io/) or [Selenium](https://www.selenium.dev/) for end-to-end testing.
+
+#### Example with Cypress:
+
+1. Install Cypress:
+```bash
+npm install cypress --save-dev
+```
+
+2. Create a test file:
+```javascript cypress/integration/test.js
+describe('Space WH Test', () => {
+  it('Should generate and verify invitation', () => {
+    cy.request('POST', 'http://localhost:3000/admin/generate-invitation', {
+      fullName: 'John Doe',
+      email: 'john.doe@example.com',
+      pin: '1234',
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body.invitationCode).to.be.a('string');
+    });
+  });
+});
+```
+
+3. Run Cypress:
+```bash
+npx cypress open
+```
+
+### 4. Check the Database
+
+You can use `psql` to check the database:
+
+```bash
+psql -U your_username -d spacewh
+```
+
+Then run SQL queries to verify data insertion:
+```sql
+SELECT * FROM invitations;
+SELECT * FROM users;
+```
+
+### 5. Verify JWT Tokens
+
+You can verify the JWT tokens using tools like [jwt.io](https://jwt.io/) or the `jsonwebtoken` library:
+
+```javascript
+const jwt = require('jsonwebtoken');
+const token = 'your_jwt_token';
+const decoded = jwt.verify(token, process.env.JWT_SECRET);
+console.log(decoded);
+```
+
+### 6. Check Logs
+
+Check the console logs for any errors or success messages.
+
+### 7. Test the AI Model
+
+If you have the AI model integrated, you can test it by:
+
+1. Uploading a voice sample.
+2. Running the AI verification process.
+3. Checking the response for success/failure.
+
+### 8. Security Testing
+
+Test the security features like:
+- JWT token expiration
+- AES-256 encryption
+- Rate limiting (if implemented)
+
+### 9. Performance Testing
+
+Use tools like [LoadRunner](https://www.microfocus.com/en-us/products/loadrunner-professional) or [JMeter](https://jmeter.apache.org/) to test performance under load.
+
+### 10. Error Handling
+
+Test edge cases and error scenarios:
+- Invalid QR codes
+- Incorrect PINs
+- Duplicate emails
+- Invalid tokens
+
+### Summary
+
+To test the Space WH project:
+1. Use Postman or the `client.js` script to test API endpoints.
+2. Use Cypress or Selenium for end-to-end testing.
+3. Check the database and logs for correct data insertion.
+4. Test security and performance features.
+5. Verify the AI model integration.
+
+Let me know if you need help with any specific test case or further details!

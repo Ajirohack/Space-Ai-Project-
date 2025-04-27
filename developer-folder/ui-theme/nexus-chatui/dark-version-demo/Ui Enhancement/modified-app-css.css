@@ -1,0 +1,409 @@
+:root {
+  --primary-color: #3a7bd5;
+  --primary-gradient: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+  --secondary-color: #2b5cb2;
+  --background-color: #000000;
+  --message-bg-user: #1a1a1a;
+  --message-bg-nexus: #0a0a0a;
+  --message-border-nexus: rgba(58, 123, 213, 0.15);
+  --nexus-pulse: rgba(0, 210, 255, 0.75);
+  --text-color: #ffffff;
+  --light-text: #aaaaaa;
+  --very-light-text: #7a7a7a;
+  --border-color: #333333;
+  --shadow-color: rgba(42, 109, 210, 0.05);
+  --nexus-glow: 0 0 15px rgba(0, 210, 255, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.app-header {
+  padding: 20px 24px;
+  background: var(--background-color);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  height: 130px;
+}
+
+.centered-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0.55);
+}
+
+.nexus-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--nexus-glow);
+}
+
+.nexus-logo-inner {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.nexus-logo-pulse {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: var(--nexus-pulse);
+  border-radius: 50%;
+  animation: nexus-pulse 3s infinite;
+}
+
+@keyframes nexus-pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 6px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.status-light {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.status-light.active {
+  background-color: #4caf50;
+  color: #4caf50;
+}
+
+.status-light.processing {
+  background-color: #ffc107;
+  color: #ffc107;
+  animation: pulse 1.5s infinite;
+}
+
+.status-light.recording {
+  background-color: #ff4a4a;
+  color: #ff4a4a;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  max-width: 85%;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.message:hover {
+  transform: translateY(-2px);
+}
+
+.user-message {
+  margin-left: auto;
+  flex-direction: row-reverse;
+}
+
+.message-content {
+  padding: 16px 20px;
+  border-radius: 18px;
+  position: relative;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.nexus-message .message-content {
+  background-color: var(--message-bg-nexus);
+  margin-left: 16px;
+  border: 1px solid var(--message-border-nexus);
+  border-top-left-radius: 0;
+}
+
+.user-message .message-content {
+  background: var(--message-bg-user);
+  color: white;
+  margin-right: 16px;
+  border-top-right-radius: 0;
+  border: 1px solid #333;
+}
+
+.message-text {
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.message-time {
+  font-size: 0.7rem;
+  color: var(--very-light-text);
+  margin-top: 8px;
+  text-align: right;
+}
+
+.user-message .message-time {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.nexus-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--nexus-glow);
+}
+
+.nexus-avatar-inner {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.nexus-avatar-pulse {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background-color: var(--nexus-pulse);
+  border-radius: 50%;
+  animation: nexus-pulse 3s infinite;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 24px 24px;
+  align-items: center;
+  background-color: black;
+  border-top: 1px solid var(--border-color);
+  position: relative;
+  z-index: 5;
+  gap: 15px;
+}
+
+.modern-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.input-area input {
+  width: 100%;
+  padding: 14px 55px 14px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s;
+  background-color: #111;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.input-area input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.15);
+}
+
+.send-button-inside {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: black;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.send-button-inside:hover {
+  color: var(--primary-color);
+}
+
+.send-button-inside:disabled {
+  color: #555;
+  cursor: not-allowed;
+}
+
+.bottom-attachment-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 5px;
+}
+
+.circular-button {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #111;
+  border: 1px solid #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 0.2s;
+}
+
+.circular-button:hover {
+  background-color: #222;
+  transform: translateY(-2px);
+}
+
+.circular-button.recording {
+  background-color: #ff4a4a;
+  color: white;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 0 15px rgba(255, 74, 74, 0.4);
+}
+
+.pending-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12px 24px;
+  background-color: black;
+  border-top: 1px solid var(--border-color);
+  gap: 10px;
+}
+
+.pending-attachment {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background-color: #111;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.pending-attachment:hover {
+  transform: translateY(-2px);
+}
+
+.attachment-preview {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 8px;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.document-preview {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.document-preview span {
+  font-size: 0.

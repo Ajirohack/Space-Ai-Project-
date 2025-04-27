@@ -1,0 +1,47 @@
+The Platform is divided into several phases... 
+##The first Phase being the membership registration system, which comprises of the an admin portal to generate an Invitation key . and after invited members receives their key, through email, they then proceeded with validating and accepting their invitation.
+
+**### **2.1 Membership Registration (By Invitation Only)**
+
+This phase controls **who can join Space WH**, ensuring exclusivity.
+
+### **💡 Optimized Registration Process**
+
+1. **Invitation Code Issuance (Admin-Generated)**
+    - Admin generates a **unique alphanumeric** **Invitation Code** (15-20 chars).
+    - Code is **linked to the invited person’s full name**.
+    - Sent **via email, QR code, or encrypted link**, along with a **4-digit PIN**.
+2. **QR Code & PIN Authentication**
+    - User **scans the QR code** (or visits the encrypted link).
+    - The page is **blurred out** until the **4-digit PIN** is entered.
+    - Once validated, the **AI-assisted onboarding process begins**.
+3. **AI-Assisted Onboarding (Voice-Driven)**
+    - **AI verifies** the user's **full name** (to match Invitation Code).
+    - AI **explains Space WH policies, rules, and responsibilities**.
+    - AI **asks for verbal consent** (recorded as part of offline verification).
+    - If the user **accepts**, the request is **sent to admin for final approval**.
+4. **Offline Verification & Membership Code Issuance**
+    - Admin **reviews the AI-captured data**.
+    - If approved, the **Membership Code** is sent to the user.
+    - The user is now eligible to **download & install the Space WH App**.
+
+
+
+Onboarding is a voice interview. So an Ai (Model) will be embedded into that process for the onboarding process .
+
+**
+**Secure Login & Membership Key**
+
+- **Membership Code** → Used for **dashboard login** (until full initiation).
+- **Membership Key** → A **permanent unique identifier** stored in the **database**, tracking:
+    - **Member actions**
+    - **Usage history**
+    - **Feature access rights**
+    - **Temporary revocation capability
+
+
+After successful registration, that invitation Key, then permanently get secured by changing it to a Membership Key, which allow the new member to access the SpaceWH, which is the main aim of registration. To get access to the SpaceWH
+
+The SpaceWH (initial version) is like a clean Chat UI, which takes us to the next Phase.
+
+But before then, let polish this enough and get a working framewwork, and create some beautiful Artifacts

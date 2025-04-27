@@ -1,0 +1,64 @@
+name: Security Scanning
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *' # Run daily
+
+jobs:
+  security:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run npm audit
+      run: npm audit --audit-level=high
+      
+    - name: Run OWASP Dependency Check
+      uses: dependency-check/Dependency-Check_Action@main
+      with:
+        project: 'the-space'
+        path: '.'
+        format: 'HTML'
+        args: >
+          --suppression ./.dependency-check-suppression.xml
+          --failOnCVSS 7
+          --enableRetired
+          
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=high
+        
+    - name: Run ESLint security rules
+      run: npx eslint . --config .eslintrc.js --no-eslintrc -c .eslintrc.security.js
+      
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    - name: Archive security reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-reports
+        path: |
+          dependency-check-report.html
+          .scannerwork/

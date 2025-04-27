@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # Frontend service
+  nexus-client:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - nexus-server
+    networks:
+      - nexus-network
+    restart: unless-stopped
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+
+  # Backend service
+  nexus-server:
+    build:
+      context: ./server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server/uploads:/app/uploads
+      - ./server/data:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - LLM_PROVIDER=${LLM_PROVIDER:-ollama}
+      - OLLAMA_API_URL=http://ollama:11434/api
+    networks:
+      - nexus-network
+    restart: unless-stopped
+    depends_on:
+      - ollama
+      - mongodb
+      - redis
+
+  # Ollama service for running local models
+  ollama:
+    image: ollama/ollama:latest
+    container_name: nexus-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama-data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    networks:
+      - nexus-network
+    # Healthcheck to ensure Ollama is ready
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      ret

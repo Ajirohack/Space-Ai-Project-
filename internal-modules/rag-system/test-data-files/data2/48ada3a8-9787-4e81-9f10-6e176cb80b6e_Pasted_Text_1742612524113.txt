@@ -1,0 +1,313 @@
+Great! Let's start building the core components of the Space WH project, beginning with the **Backend** setup using Node.js with Express for the RESTful API, and PostgreSQL for the database.
+
+### Phase 1: Backend Setup
+
+#### 1. Project Setup
+
+First, we'll initialize a Node.js project and install the necessary dependencies.
+
+#### 2. Initialize Node.js Project
+
+Create a new directory for the project and initialize it:
+
+```bash
+mkdir space-wh
+cd space-wh
+npm init -y
+```
+
+#### 3. Install Dependencies
+
+Install the required packages:
+
+```bash
+npm install express pg bcryptjs jsonwebtoken dotenv
+```
+
+- `express`: Web framework for Node.js.
+- `pg`: PostgreSQL client for Node.js.
+- `bcryptjs`: For password hashing (though we'll use it later).
+- `jsonwebtoken`: For JWT authentication.
+- `dotenv`: For environment variable management.
+
+#### 4. Database Setup
+
+Create a new PostgreSQL database and tables using the schema provided earlier.
+
+```sql schema.sql
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  full_name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  invitation_code VARCHAR(20) UNIQUE NOT NULL,
+  status VARCHAR(50),
+  membership_key VARCHAR(50) UNIQUE,
+  activity_logs TEXT
+);
+
+CREATE TABLE invitations (
+  id SERIAL PRIMARY KEY,
+  code VARCHAR(20) UNIQUE NOT NULL,
+  full_name VARCHAR(100) NOT NULL,
+  pin VARCHAR(4) NOT NULL
+);
+```
+
+#### 5. Environment Variables
+
+Create a `.env` file to store environment variables:
+
+```env .env
+PORT=3000
+DATABASE_URL=postgres://username:password@localhost:5432/spacewh
+JWT_SECRET=your_jwt_secret
+```
+
+Replace `username`, `password`, and `your_jwt_secret` with your actual PostgreSQL credentials and a secure JWT secret.
+
+#### 6. Database Connection
+
+Create a file to manage the database connection:
+
+```javascript db.js
+// db.js
+const { Pool } = require('pg');
+require('dotenv').config();
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+module.exports = pool;
+```
+
+#### 7. Basic Server Setup
+
+Create the main server file:
+
+```javascript server.js
+// server.js
+const express = require('express');
+const pool = require('./db');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(express.json());
+
+// Middleware for JWT authentication
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
+// Initiate Invitation Code Issuance (Admin-Generated)
+app.post('/admin/generate-invitation', authenticateToken, async (req, res) => {
+  const { fullName, email, pin } = req.body;
+
+  try {
+    const invitationCode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    await pool.query(
+      'INSERT INTO invitations (code, full_name, pin) VALUES ($1, $2, $3) RETURNING *',
+      [invitationCode, fullName, pin]
+    );
+    res.json({ invitationCode });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// QR Codes and PIN Authentication
+app.post('/auth/verify-qr', async (req, res) => {
+  const { qrCode, pin } = req.body;
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM invitations WHERE code = $1 AND pin = $2',
+      [qrCode, pin]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({ message: 'Invalid QR Code or PIN' });
+    }
+
+    const user = result.rows[0];
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// AI-Assisted Onboarding (Placeholder for AI Integration)
+app.post('/auth/onboard', authenticateToken, async (req, res) => {
+  const { token } = req.headers.authorization.split(' ');
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const { fullName } = req.body;
+
+  try {
+    // Placeholder for AI verification and onboarding process
+    // Here you would integrate the AI model for voice-based verification
+    const result = await pool.query(
+      'SELECT * FROM invitations WHERE full_name = $1',
+      [fullName]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(400).json({ message: 'Invalid Full Name' });
+    }
+
+    // Simulate AI verification and user acceptance
+    const user = result.rows[0];
+    const membershipKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+    await pool.query(
+      'INSERT INTO users (full_name, email, invitation_code, status, membership_key) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [fullName, user.email, user.code, 'onboarded', membershipKey]
+    );
+
+    res.json({ message: 'Onboarding Successful', membershipKey });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+```
+
+#### 8. Database Seeding (Optional)
+
+You can create a script to seed the database with some initial data.
+
+```javascript seed.js
+// seed.js
+const pool = require('./db');
+
+async function seed() {
+  try {
+    const users = [
+      { full_name: 'John Doe', email: 'john.doe@example.com', pin: '1234' },
+      { full_name: 'Jane Smith', email: 'jane.smith@example.com', pin: '5678' },
+    ];
+
+    for (const user of users) {
+      const invitationCode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      await pool.query(
+        'INSERT INTO invitations (code, full_name, pin) VALUES ($1, $2, $3)',
+        [invitationCode, user.full_name, user.pin]
+      );
+      console.log(`Invitation Code for ${user.full_name}: ${invitationCode}`);
+    }
+  } catch (err) {
+    console.error(err.message);
+  } finally {
+    pool.end();
+  }
+}
+
+seed();
+```
+
+Run the seeding script to populate the database:
+
+```bash
+node seed.js
+```
+
+#### 9. Example Client for Testing
+
+You can use a tool like Postman or create a simple client script to test the API.
+
+```javascript client.js
+// client.js
+const axios = require('axios');
+
+async function generateInvitation() {
+  const adminToken = 'your_admin_jwt_token'; // Replace with a valid admin token
+  const response = await axios.post(
+    'http://localhost:3000/admin/generate-invitation',
+    {
+      fullName: 'John Doe',
+      email: 'john.doe@example.com',
+      pin: '1234',
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+      },
+    }
+  );
+  console.log(response.data);
+}
+
+async function verifyQR() {
+  const response = await axios.post('http://localhost:3000/auth/verify-qr', {
+    qrCode: 'your_invitation_code',
+    pin: '1234',
+  });
+  console.log(response.data);
+}
+
+async function onboard() {
+  const token = 'your_jwt_token_from_verifyQR'; // Replace with a valid token
+  const response = await axios.post(
+    'http://localhost:3000/auth/onboard',
+    {
+      fullName: 'John Doe',
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  console.log(response.data);
+}
+
+// Uncomment the function you want to test
+// generateInvitation();
+// verifyQR();
+// onboard();
+```
+
+#### 10. Running the Application
+
+Start the server:
+
+```bash
+node server.js
+```
+
+### Summary
+
+- **Backend**: Set up using Node.js and Express.
+- **Database**: Configured PostgreSQL with necessary tables.
+- **Environment Variables**: Managed using `.env` for security.
+- **API Endpoints**: Implemented endpoints for invitation generation, QR verification, and onboarding.
+- **Client**: Created a simple client script for testing.
+
+This sets the foundation for the backend. In the next phase, we'll implement the frontend using React.js and integrate the AI model for voice-based authentication.
+
+### Next Steps
+
+- **Frontend Development**: Implement the frontend using React.js.
+- **AI Model Integration**: Integrate the fine-tuned AI model for voice-based onboarding.
+- **Security**: Implement AES-256 encryption and JWT authentication.
+- **In-House Email System**: Set up the self-hosted email system using Postfix/Mailu.
+
+Let me know if you need to proceed with the next phase or if you have any specific questions or requirements!
